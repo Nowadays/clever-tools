@@ -452,9 +452,16 @@ function run () {
       description: 'The member label',
     }),
     optNgNodeCategoryId: cliparse.option('node-category-id', {
+      required: false,
       aliases: ['c'],
       metavar: 'node_category_id',
       description: 'The external node category ID',
+      // complete: Networkgroup('xxx'),
+    }),
+    optNgPeerId: cliparse.option('peer-id', {
+      required: false,
+      metavar: 'peer_id',
+      description: 'The peer ID',
       // complete: Networkgroup('xxx'),
     }),
     optNgSearchAppId: cliparse.option('app-id', {
@@ -727,10 +734,6 @@ function run () {
     args: [args.ngIdOrLabel],
     options: [opts.wgPublicKey, opts.ngPeerLabel, opts.optNgNodeCategoryId, opts.interactive],
   }, networkgroups('joinNg'));
-  const networkgroupsLeaveCommand = cliparse.command('leave', {
-    description: 'Leave a networkgroup',
-    args: [args.ngIdOrLabel],
-  }, networkgroups('leaveNg'));
   // networkgroup category - end
 
   // member category - start
@@ -761,7 +764,7 @@ function run () {
   // peer category - start
   const networkgroupsPeerListCommand = cliparse.command('list', {
     description: 'List peers of a networkgroup',
-    options: [opts.optNgIdOrLabel, opts.jsonFormat],
+    options: [opts.ngIdOrLabel, opts.jsonFormat],
   }, networkgroups('listPeers'));
   const networkgroupsPeerGetCommand = cliparse.command('get', {
     description: 'Get a networkgroup peer details',
@@ -769,7 +772,7 @@ function run () {
   }, networkgroups('getPeer'));
   const networkgroupsPeerAddCommand = cliparse.command('add-external', {
     description: 'Add an external node as a networkgroup peer',
-    options: [opts.ngIdOrLabel, opts.ngPeerRole, opts.wgPublicKey, opts.ngPeerLabel, opts.ngPeerParentMemberId],
+    options: [opts.ngIdOrLabel, opts.optNgPeerId, opts.ngPeerRole, opts.wgPublicKey, opts.ngPeerLabel, opts.ngPeerParentMemberId],
   }, networkgroups('addExternalPeer'));
   const networkgroupsPeerRemoveExternalCommand = cliparse.command('remove-external', {
     description: 'Remove an external node from a networkgroup',
@@ -784,11 +787,11 @@ function run () {
 
   const networkgroupsCommand = cliparse.command('networkgroups', {
     description: 'List networkgroups commands',
-    commands: [networkgroupsListCommand, networkgroupsCreateCommand, networkgroupsDeleteCommand, networkgroupsJoinCommand, networkgroupsLeaveCommand, networkgroupsMembersCategoryCommand, networkgroupsPeersCategoryCommand],
+    commands: [networkgroupsListCommand, networkgroupsCreateCommand, networkgroupsDeleteCommand, networkgroupsJoinCommand, networkgroupsMembersCategoryCommand, networkgroupsPeersCategoryCommand],
   });
   const ngCommand = cliparse.command('ng', {
     description: 'List networkgroups commands',
-    commands: [networkgroupsListCommand, networkgroupsCreateCommand, networkgroupsDeleteCommand, networkgroupsJoinCommand, networkgroupsLeaveCommand, networkgroupsMembersCategoryCommand, networkgroupsPeersCategoryCommand],
+    commands: [networkgroupsListCommand, networkgroupsCreateCommand, networkgroupsDeleteCommand, networkgroupsJoinCommand, networkgroupsMembersCategoryCommand, networkgroupsPeersCategoryCommand],
   });
 
   // NOTIFY-EMAIL COMMAND
